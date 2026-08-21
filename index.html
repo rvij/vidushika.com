@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidushika Vij</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1a1a1a;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .download-btn:hover { background: #333; }
+
+    .download-btn svg {
+      flex-shrink: 0;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .pdf-container {
+      width: 100%;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 140px);
+      min-height: 600px;
+      border: none;
+    }
+
+    .fallback {
+      display: none;
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .fallback p { color: #555; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Vidushika Vij</h1>
+      <p>Resume</p>
+    </div>
+    <a class="download-btn" href="VidushikaVijResume.pdf" download>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Download PDF
+    </a>
+  </header>
+  <main>
+    <div class="pdf-container">
+      <iframe
+        src="VidushikaVijResume.pdf"
+        title="Vidushika Vij Resume"
+        onerror="document.querySelector('.fallback').style.display='block'; this.style.display='none';"
+      ></iframe>
+      <div class="fallback">
+        <p>Unable to display PDF in your browser.</p>
+        <a class="download-btn" href="VidushikaVijResume.pdf" download>Download Resume</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
