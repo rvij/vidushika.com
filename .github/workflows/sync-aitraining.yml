@@ -1,0 +1,36 @@
+name: Sync AITraining docs
+
+on:
+  # Triggers when aitraining's gh-pages branch is updated
+  repository_dispatch:
+    types: [aitraining-updated]
+  # Also allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout vidushika.com
+        uses: actions/checkout@v4
+
+      - name: Checkout aitraining gh-pages
+        uses: actions/checkout@v4
+        with:
+          repository: rvij/aitraining
+          ref: gh-pages
+          path: aitraining-built
+
+      - name: Replace aitraining subfolder
+        run: |
+          rm -rf aitraining
+          cp -r aitraining-built aitraining
+          rm -rf aitraining-built
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add aitraining/
+          git diff --cached --quiet || git commit -m "Sync AITraining docs from gh-pages"
+          git push
