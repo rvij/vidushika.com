@@ -2,22 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Photo Slideshow</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body {
-    height:100%; width:100%; overflow:hidden;
+    height:100dvh; width:100%; overflow:hidden;
     background:#0a0a0a; font-family:'Georgia', 'Times New Roman', serif;
   }
   #stage {
-    position:relative; width:100%; height:100%;
+    position:relative; width:100%; height:100dvh;
     overflow:hidden;
   }
   .slide {
-    position:absolute; top:0; left:0; width:100%; height:100%;
+    position:absolute; top:0; left:0; width:100%; height:100dvh;
     opacity:0; z-index:0;
     transition: none;
     display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
   }
   .slide.active { opacity:1; z-index:1; }
 
@@ -31,12 +33,12 @@
   /* Single photo, true aspect ratio, never cropped/stretched */
   .photo-wrap {
     position:relative; z-index:1;
-    max-width:92%; max-height:88%;
+    max-width:92%; max-height:88dvh; height:88dvh;
     display:flex; align-items:center; justify-content:center;
     box-shadow: 0 20px 60px rgba(0,0,0,0.55);
   }
   .photo-wrap img {
-    max-width:100%; max-height:100%;
+    max-width:100%; max-height:88dvh;
     width:auto; height:auto;
     display:block;
     object-fit:contain;
@@ -50,7 +52,7 @@
   /* Stacked pair: two landscape photos, top/bottom, filling a vertical frame */
   .stack-wrap {
     position:relative; z-index:1;
-    width:92%; height:88%;
+    width:92%; height:88dvh; max-height:88dvh;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap: 14px;
   }
