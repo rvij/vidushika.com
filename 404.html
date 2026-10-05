@@ -3,8 +3,33 @@
 <head><title>Redirecting...</title></head>
 <body>
 <script>
-  const lower = window.location.pathname.toLowerCase();
-  window.location.replace(lower);
+(function() {
+  const path = window.location.pathname;
+
+  function toInitCap(str) {
+    return str.replace(/[a-zA-Z]+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  }
+
+  const candidates = [path.toLowerCase(), toInitCap(path)];
+
+  async function tryRedirect() {
+    for (const candidate of candidates) {
+      if (candidate === path) continue; // skip, already know this one 404'd
+      try {
+        const res = await fetch(candidate, { method: 'HEAD' });
+        if (res.ok) {
+          window.location.replace(candidate);
+          return;
+        }
+      } catch (e) { /* network hiccup, try next candidate */ }
+    }
+    // neither variant exists — just show the normal 404 content, no redirect
+  }
+
+  tryRedirect();
+})();
 </script>
 </body>
 </html>
+
+
