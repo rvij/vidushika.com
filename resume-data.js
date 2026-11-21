@@ -95,5 +95,12 @@ const RESUME = {
     { name: "Account Provisioning Scripts",    context: "Google Fiber · 2023",    desc: "Developed and refined Python/Linux automation scripts for Salesforce account provisioning with Claude assistance." },
     { name: "SQL Query Acceleration",          context: "Google Fiber · 2024",    desc: "Accelerated SQL development using Gemini to draft and optimize cross-system device compliance queries." },
     { name: "Personal Website",                context: "Personal · 2024",        desc: "Built and launched vidushika.com using Claude, deployed on Cloudflare, with multiple resume style views." }
-  ]
+  ],
+  certifications: [
+    { name: "Certificate Program in Business Analytics", detail: "— Harvard Business School Online (2020)", issuer: "Harvard Business School Online · 2020" },
+    { name: "Google Cloud Associate Cloud Engineer",     detail: "(2021)",                                   issuer: "Google · 2021" },
+    { name: "Microsoft Azure AI Fundamentals – AI-900",  detail: "(2022)",                                   issuer: "Microsoft · 2022" },
+    { name: "HubSpot Sales Software Certified",         detail: "(2023)",                                   issuer: "HubSpot · 2023" }
+  ],
+  additionalCerts: "Google Cloud Professional Cloud Security Engineer · Cisco Introduction to Cybersecurity · Excel Skills for Business (Coursera)"
 };
