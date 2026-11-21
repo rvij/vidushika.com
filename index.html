@@ -2,122 +2,339 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Vidushika Vij</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f5f5;
-      color: #1a1a1a;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    /* Layout: sticky nav + scrolling single-column, max-width 760px centered */
+    :root {
+      --bg: #F5F6F9;
+      --surface: #FFFFFF;
+      --fg: #0D1017;
+      --fg-muted: #58637A;
+      --accent: #2155CC;
+      --accent-bg: #EDF2FF;
+      --border: #E0E4EF;
+      --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
     }
-
-    header {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 20px 32px;
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0C0F17; --surface: #141924; --fg: #E8ECF5; --fg-muted: #8390A8;
+        --accent: #4D7EF5; --accent-bg: #182040; --border: #232D42;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0C0F17; --surface: #141924; --fg: #E8ECF5; --fg-muted: #8390A8;
+      --accent: #4D7EF5; --accent-bg: #182040; --border: #232D42;
+      color-scheme: dark;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-block: 0;
+    }
+    nav {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 10;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
+      padding-block: 13px;
+      padding-left: max(24px, env(safe-area-inset-left, 0px));
+      padding-right: max(24px, env(safe-area-inset-right, 0px));
+      margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+      margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
     }
-
-    header h1 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+    .nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
+    a.nav-link {
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
     }
-
-    header p {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 2px;
-    }
-
-    .download-btn {
+    a.nav-link:hover { background: var(--accent-bg); color: var(--accent); }
+    .resume-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: #1a1a1a;
+      gap: 6px;
+      background: var(--accent);
       color: #fff;
       text-decoration: none;
-      padding: 10px 20px;
+      padding: 7px 15px;
       border-radius: 6px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: background 0.15s;
+      font-size: 0.8rem;
+      font-weight: 600;
       white-space: nowrap;
+      transition: opacity 0.15s;
     }
-
-    .download-btn:hover { background: #333; }
-
-    .download-btn svg {
+    .resume-btn:hover { opacity: 0.85; }
+    .hero {
+      max-width: 760px;
+      margin: 52px auto 0;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+    }
+    .open-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-size: 0.775rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+    .open-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
       flex-shrink: 0;
     }
-
-    main {
-      flex: 1;
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 2.9rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+      margin: 0 0 6px;
+    }
+    .hero .subtitle { font-size: 1.0375rem; color: var(--fg-muted); margin: 0 0 20px; }
+    .hero .summary {
+      max-width: 640px;
+      color: var(--fg-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-size: 0.9375rem;
+    }
+    .contact-row {
       display: flex;
-      justify-content: center;
-      padding: 24px 16px;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 0.875rem;
+      color: var(--fg-muted);
+      align-items: center;
     }
-
-    .pdf-container {
-      width: 100%;
-      max-width: 900px;
-      background: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    .contact-row a { color: var(--accent); text-decoration: none; }
+    .contact-row a:hover { text-decoration: underline; }
+    .content { max-width: 760px; margin: 0 auto; padding-bottom: 80px; }
+    section { margin-top: 52px; }
+    section h2 {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin: 0 0 22px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
-
-    iframe {
-      display: block;
-      width: 100%;
-      height: calc(100vh - 140px);
-      min-height: 600px;
-      border: none;
+    .job { margin-bottom: 32px; }
+    .job:last-child { margin-bottom: 0; }
+    .job-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .job-company { font-family: var(--font-display); font-weight: 700; font-size: 0.9875rem; }
+    .job-meta { color: var(--fg-muted); font-size: 0.875rem; margin: 3px 0 10px; }
+    .job-date { font-size: 0.8rem; color: var(--fg-muted); white-space: nowrap; font-variant-numeric: tabular-nums; padding-top: 2px; }
+    .job ul { margin: 0; padding-left: 18px; }
+    .job li { color: var(--fg-muted); font-size: 0.8875rem; line-height: 1.65; margin-bottom: 5px; }
+    .job li:last-child { margin-bottom: 0; }
+    .auto-list { display: flex; flex-direction: column; gap: 9px; }
+    .auto-item { font-size: 0.8875rem; color: var(--fg-muted); padding-left: 16px; position: relative; line-height: 1.6; }
+    .auto-item::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 600; font-size: 0.8rem; top: 1px; }
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+    .skill-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 500;
     }
-
-    .fallback {
-      display: none;
-      padding: 48px 32px;
-      text-align: center;
-    }
-
-    .fallback p { color: #555; margin-bottom: 20px; }
+    .edu-entry { margin-bottom: 22px; }
+    .edu-entry:last-child { margin-bottom: 0; }
+    .edu-school { font-family: var(--font-display); font-weight: 700; font-size: 0.9875rem; }
+    .edu-degree { color: var(--fg-muted); font-size: 0.875rem; margin-top: 2px; }
+    .certs-list { display: flex; flex-direction: column; gap: 9px; }
+    .cert-item { font-size: 0.875rem; color: var(--fg-muted); padding-left: 15px; position: relative; }
+    .cert-item::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .cert-item strong { color: var(--fg); font-weight: 500; }
+    .cert-additional { margin-top: 14px; font-size: 0.8375rem; color: var(--fg-muted); font-style: italic; }
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Vidushika Vij</h1>
-      <p>Resume</p>
-    </div>
-    <a class="download-btn" href="VidushikaVijResume.pdf" download>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Download PDF
-    </a>
-  </header>
-  <main>
-    <div class="pdf-container">
-      <iframe
-        src="VidushikaVijResume.pdf"
-        title="Vidushika Vij Resume"
-        onerror="document.querySelector('.fallback').style.display='block'; this.style.display='none';"
-      ></iframe>
-      <div class="fallback">
-        <p>Unable to display PDF in your browser.</p>
-        <a class="download-btn" href="VidushikaVijResume.pdf" download>Download Resume</a>
+<nav>
+  <div class="nav-links">
+    <a href="#experience" class="nav-link">Experience</a>
+    <a href="#automation" class="nav-link">AI &amp; Automation</a>
+    <a href="#skills" class="nav-link">Skills</a>
+    <a href="#education" class="nav-link">Education</a>
+    <a href="#certifications" class="nav-link">Certifications</a>
+  </div>
+  <a href="VidushikaVijResume.pdf" download class="resume-btn">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7M4 5.5l2.5 2.5L9 5.5M1.5 10.5v.5a.5.5 0 00.5.5h9a.5.5 0 00.5-.5v-.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Resume
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="open-badge">Open to Work</div>
+  <h1>Vidushika Vij</h1>
+  <p class="subtitle">Business Operations &amp; Analytics · San Francisco Bay Area, CA</p>
+  <p class="summary">Business operations and analytics professional with 4+ years of experience spanning quality assurance operations, business systems administration, and data analytics. Skilled in requirements gathering, cross-functional stakeholder management, and data-driven reporting. Uses Claude and Gemini to automate reporting and scripting workflows.</p>
+  <div class="contact-row">
+    <span>San Francisco Bay Area, CA</span>
+    <span>vidushika.vij@hcltech.com</span>
+    <a href="https://linkedin.com/in/vidushikavij" target="_blank" rel="noopener">linkedin.com/in/vidushikavij</a>
+    <span>US Citizen</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="job">
+      <div class="job-header">
+        <span class="job-company">Google Fiber (via HCL Technologies)</span>
+        <span class="job-date">May 2023 – Present</span>
       </div>
+      <div class="job-meta">Niche QA Test Engineer · Sunnyvale, CA</div>
+      <ul>
+        <li>Primary point of contact between Automation, Engineering, and Mobile teams; gather requirements and coordinate device quality assurance processes across the organization, including work management between offshore and onshore teams.</li>
+        <li>Manage Salesforce account creation and activation workflows; built a Linux-based automation script that streamlined account provisioning and reduced manual processing time by 30%.</li>
+        <li>Analyze device compliance data across multiple systems (SCM, Netcracker, RPC Studio, Axiros) to identify and resolve data integrity issues, supporting accurate system-of-record reporting.</li>
+        <li>Run device performance and speed testing to monitor uptime and support operational reporting to cross-functional stakeholders.</li>
+      </ul>
     </div>
-  </main>
+    <div class="job">
+      <div class="job-header">
+        <span class="job-company">HCL Technologies</span>
+        <span class="job-date">Jan 2022 – May 2023</span>
+      </div>
+      <div class="job-meta">Developer (Business/Data Analyst) · Sacramento, CA</div>
+      <ul>
+        <li>Gathered and translated business requirements for a corporate employee-experience and communications platform supporting Microsoft; built reporting solutions using Power BI, Excel, and SQL.</li>
+        <li>Presented Power BI demos and analytical findings to internal stakeholder audiences of 20 employees, supporting adoption of new analytics tools.</li>
+        <li>Partnered with client teams to develop data governance, data security, and data privacy practices and policies.</li>
+        <li>Completed consulting engagements with strong client feedback while participating in ongoing learning &amp; development programs.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-header">
+        <span class="job-company">HCL America Inc.</span>
+        <span class="job-date">Sep – Dec 2021</span>
+      </div>
+      <div class="job-meta">Data Science Analyst Intern · Sacramento, CA</div>
+      <ul>
+        <li>Selected for "Rise at HCL Academy"; delivered hands-on data science and engineering projects using Microsoft Azure, Apache Spark/Databricks, and BI tools.</li>
+        <li>Led a team in developing and validating data science models; converted internship into a full-time offer based on project performance.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-header">
+        <span class="job-company">Tredence Inc.</span>
+        <span class="job-date">Jun – Aug 2019</span>
+      </div>
+      <div class="job-meta">Business Analyst Intern · Menlo Park, CA</div>
+      <ul>
+        <li>Analyzed retail sales data using SQL for a large enterprise client to identify business trends and inform decision-making.</li>
+        <li>Built interactive Tableau dashboards to visualize KPIs and sales performance for stakeholder reporting.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-header">
+        <span class="job-company">FlyTxt Inc.</span>
+        <span class="job-date">Jun – Aug 2018</span>
+      </div>
+      <div class="job-meta">Marketing &amp; Business Analyst Intern · Cupertino, CA</div>
+      <ul>
+        <li>Supported design and execution of digital marketing campaigns on FlyTxt's telecom marketing platform.</li>
+        <li>Measured and reported campaign performance metrics to guide marketing and business development strategy.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="automation">
+    <h2>AI &amp; Automation</h2>
+    <div class="auto-list">
+      <div class="auto-item">Built AI agents with Gemini Spark, Claude Skills and Apple Shortcuts to summarize daily market news and analyze key emails.</div>
+      <div class="auto-item">Streamlined defect reporting by using Claude to summarize device test logs and draft tickets.</div>
+      <div class="auto-item">Automated weekly KPI summaries by feeding Power BI exports to Claude to generate stakeholder-ready narratives.</div>
+      <div class="auto-item">Accelerated SQL development using Gemini to draft and optimize cross-system device compliance queries.</div>
+      <div class="auto-item">Developed and refined Python/Linux automation scripts for account provisioning with Claude.</div>
+      <div class="auto-item">Built and launched a personal website (vidushika.com) using Claude, deployed on Cloudflare.</div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+      <span class="skill-chip">Power BI</span>
+      <span class="skill-chip">Tableau</span>
+      <span class="skill-chip">SQL</span>
+      <span class="skill-chip">Python</span>
+      <span class="skill-chip">R</span>
+      <span class="skill-chip">Excel (Advanced)</span>
+      <span class="skill-chip">Generative AI (Claude, Gemini)</span>
+      <span class="skill-chip">Prompt Engineering</span>
+      <span class="skill-chip">Salesforce Admin</span>
+      <span class="skill-chip">Google Cloud</span>
+      <span class="skill-chip">Microsoft Azure</span>
+      <span class="skill-chip">Linux</span>
+      <span class="skill-chip">HubSpot</span>
+      <span class="skill-chip">Data Governance &amp; Privacy</span>
+      <span class="skill-chip">QA Automation</span>
+      <span class="skill-chip">Process Automation</span>
+      <span class="skill-chip">Apache Spark / Databricks</span>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="edu-entry">
+      <div class="edu-school">Northeastern University</div>
+      <div class="edu-degree">Master of Professional Studies in Analytics · Boston, MA · 2021–2022</div>
+    </div>
+    <div class="edu-entry">
+      <div class="edu-school">San Jose State University</div>
+      <div class="edu-degree">B.S. Business Administration, Concentration in Business Analytics · San Jose, CA · 2016–2020</div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <h2>Certifications</h2>
+    <div class="certs-list">
+      <div class="cert-item"><strong>Certificate Program in Business Analytics</strong> — Harvard Business School Online (2020)</div>
+      <div class="cert-item"><strong>Google Cloud Associate Cloud Engineer</strong> (2021)</div>
+      <div class="cert-item"><strong>Microsoft Azure AI Fundamentals – AI-900</strong> (2022)</div>
+      <div class="cert-item"><strong>HubSpot Sales Software Certified</strong> (2023)</div>
+    </div>
+    <p class="cert-additional">Additional: Google Cloud Professional Cloud Security Engineer · Cisco Introduction to Cybersecurity · Excel Skills for Business (Coursera)</p>
+  </section>
+
+</div>
 </body>
 </html>
