@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidushika Vij</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --sidebar-w:256px; --sidebar-bg:#0f172a; --sidebar-border:#1e293b; --main-bg:#f8fafc; --card-bg:#ffffff; --border:#e2e8f0; --text:#0f172a; --text-mid:#334155; --text-dim:#64748b; --accent:#3b82f6; --accent-dark:#1d4ed8; --green:#10b981; --tag-bg:#f1f5f9; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; }
+    body { font-family:'Inter',system-ui,sans-serif; font-size:14px; line-height:1.6; display:flex; -webkit-font-smoothing:antialiased; }
+    .sidebar { width:var(--sidebar-w); flex-shrink:0; background:var(--sidebar-bg); height:100vh; position:fixed; top:0; left:0; overflow-y:auto; display:flex; flex-direction:column; padding:32px 20px; gap:28px; }
+    .sidebar::-webkit-scrollbar { width:4px; }
+    .sidebar::-webkit-scrollbar-thumb { background:#334155; border-radius:2px; }
+    .s-identity { display:flex; flex-direction:column; gap:10px; }
+    .s-avatar { width:60px; height:60px; border-radius:12px; background:linear-gradient(135deg,#3b82f6,#8b5cf6); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; color:white; letter-spacing:-1px; }
+    .s-name { font-size:17px; font-weight:700; color:#f1f5f9; letter-spacing:-0.3px; }
+    .s-title { font-size:12px; color:#64748b; font-weight:500; }
+    .s-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); color:#10b981; font-size:11px; font-weight:600; padding:2px 8px; border-radius:99px; width:fit-content; margin-top:2px; }
+    .s-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:#10b981; }
+    .s-nav { display:flex; flex-direction:column; gap:2px; }
+    .s-nav a { display:flex; align-items:center; gap:9px; text-decoration:none; padding:7px 10px; border-radius:7px; font-size:13px; font-weight:500; color:#94a3b8; transition:all 0.15s; }
+    .s-nav a:hover { background:#1e293b; color:#f1f5f9; }
+    .s-nav a .nav-icon { font-size:14px; width:18px; text-align:center; }
+    .s-section-label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#475569; margin-bottom:8px; }
+    .s-contact { display:flex; flex-direction:column; gap:6px; }
+    .s-contact a, .s-contact span { display:flex; align-items:flex-start; gap:7px; font-size:12px; color:#94a3b8; text-decoration:none; line-height:1.4; transition:color 0.15s; }
+    .s-contact a:hover { color:#60a5fa; }
+    .s-contact .ci { font-size:12px; flex-shrink:0; margin-top:1px; }
+    .s-tags { display:flex; flex-wrap:wrap; gap:4px; }
+    .s-tag { background:#1e293b; border:1px solid #334155; color:#94a3b8; font-size:11px; padding:1px 7px; border-radius:4px; }
+    .s-download { display:flex; align-items:center; justify-content:center; gap:6px; background:var(--accent); color:white; text-decoration:none; font-size:13px; font-weight:600; padding:9px 0; border-radius:8px; transition:background 0.15s; margin-top:auto; }
+    .s-download:hover { background:var(--accent-dark); }
+    .main { margin-left:var(--sidebar-w); flex:1; background:var(--main-bg); min-height:100vh; padding:40px 48px 80px; max-width:calc(100% - var(--sidebar-w)); }
+    .section { margin-bottom:40px; }
+    .section-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+    .section-head h2 { font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); }
+    .section-rule { flex:1; height:1px; background:var(--border); }
+    .exp-list { display:flex; flex-direction:column; gap:12px; }
+    .exp-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:16px 20px; transition:border-color 0.15s,box-shadow 0.15s; }
+    .exp-card:hover { border-color:#93c5fd; box-shadow:0 2px 12px rgba(59,130,246,0.08); }
+    .exp-top { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; margin-bottom:1px; }
+    .exp-company { font-size:15px; font-weight:700; color:var(--text); }
+    .exp-date { font-size:11px; color:var(--text-dim); font-weight:600; }
+    .exp-role { font-size:13px; font-weight:500; color:var(--accent); margin-bottom:1px; }
+    .exp-loc { font-size:12px; color:var(--text-dim); margin-bottom:8px; }
+    .exp-bullets { list-style:none; display:flex; flex-direction:column; gap:4px; }
+    .exp-bullets li { font-size:13px; color:var(--text-mid); padding-left:14px; position:relative; line-height:1.6; }
+    .exp-bullets li::before { content:'▸'; position:absolute; left:0; color:var(--green); font-size:11px; top:2px; }
+    .edu-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:12px; }
+    .edu-top { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; }
+    .edu-school { font-size:15px; font-weight:700; color:var(--text); }
+    .edu-date { font-size:11px; color:var(--text-dim); font-weight:600; }
+    .edu-degree { font-size:13px; color:var(--accent); font-weight:500; margin:3px 0 8px; }
+    .edu-certs { font-size:12px; color:var(--text-dim); }
+    .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+    .proj-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:14px 16px; transition:border-color 0.15s; }
+    .proj-card:hover { border-color:#a78bfa; }
+    .proj-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+    .proj-ctx { font-size:11px; color:var(--text-dim); margin-bottom:6px; }
+    .proj-desc { font-size:12.5px; color:var(--text-mid); line-height:1.6; }
+    @media (max-width:768px) { body { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; padding:20px 16px; gap:16px; flex-direction:row; flex-wrap:wrap; align-items:center; } .s-contact,.s-nav { display:none; } .main { margin-left:0; max-width:100%; padding:24px 16px 60px; } }
+  </style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="s-identity">
+    <div class="s-avatar">VV</div>
+    <div class="s-name">Vidushika Vij</div>
+    <div class="s-title">Business Operations &amp; Analytics</div>
+    <div class="s-badge">Open to work</div>
+  </div>
+  <nav class="s-nav">
+    <a href="#experience"><span class="nav-icon">💼</span> Experience</a>
+    <a href="#education"><span class="nav-icon">🎓</span> Education</a>
+    <a href="#projects"><span class="nav-icon">🤖</span> AI &amp; Automation</a>
+  </nav>
+  <div>
+    <div class="s-section-label">Contact</div>
+    <div class="s-contact">
+      <span><span class="ci">📍</span> San Francisco Bay Area, CA</span>
+      <a href="mailto:vidushika.vij@hcltech.com"><span class="ci">✉️</span> vidushika.vij@hcltech.com</a>
+      <a href="https://linkedin.com/in/vidushikavij" target="_blank"><span class="ci">🔗</span> linkedin.com/in/vidushikavij</a>
+    </div>
+  </div>
+  <div>
+    <div class="s-section-label">BI &amp; Analytics</div>
+    <div class="s-tags"><span class="s-tag">Power BI</span><span class="s-tag">Tableau</span><span class="s-tag">SQL</span><span class="s-tag">Excel</span><span class="s-tag">Python</span><span class="s-tag">R</span></div>
+  </div>
+  <div>
+    <div class="s-section-label">Cloud &amp; Systems</div>
+    <div class="s-tags"><span class="s-tag">Google Cloud</span><span class="s-tag">Azure</span><span class="s-tag">Linux</span><span class="s-tag">Salesforce</span><span class="s-tag">HubSpot</span></div>
+  </div>
+  <div>
+    <div class="s-section-label">AI &amp; Automation</div>
+    <div class="s-tags"><span class="s-tag">Claude</span><span class="s-tag">Gemini</span><span class="s-tag">Prompt Engineering</span><span class="s-tag">Process Automation</span></div>
+  </div>
+  <a href="VidushikaVijResume.pdf" download class="s-download">⬇ Download Resume</a>
+</aside>
+<main class="main">
+  <div class="section" id="experience">
+    <div class="section-head"><h2>Experience</h2><div class="section-rule"></div></div>
+    <div class="exp-list" id="sp-experience"></div>
+  </div>
+  <div class="section" id="education">
+    <div class="section-head"><h2>Education</h2><div class="section-rule"></div></div>
+    <div id="sp-education"></div>
+  </div>
+  <div class="section" id="projects">
+    <div class="section-head"><h2>AI &amp; Automation</h2><div class="section-rule"></div></div>
+    <div class="proj-grid" id="sp-projects"></div>
+  </div>
+</main>
+<script src="resume-data.js"></script>
+<script>
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.getElementById('sp-experience').innerHTML = RESUME.experience.map(e =>
+    `<div class="exp-card"><div class="exp-top"><div class="exp-company">${esc(e.company)}</div><div class="exp-date">${esc(e.dates)}</div></div>
+    <div class="exp-role">${esc(e.role)}</div><div class="exp-loc">📍 ${esc(e.location)}</div>
+    <ul class="exp-bullets">${e.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>`).join('');
+  document.getElementById('sp-education').innerHTML = RESUME.education.map(e =>
+    `<div class="edu-card"><div class="edu-top"><div class="edu-school">${esc(e.school)}</div><div class="edu-date">${esc(e.dates)}</div></div>
+    <div class="edu-degree">${esc(e.degree)}</div><div class="edu-certs">Certifications: ${esc(e.certs)}</div></div>`).join('');
+  document.getElementById('sp-projects').innerHTML = RESUME.projects.map(p =>
+    `<div class="proj-card"><div class="proj-name">${esc(p.name)}</div><div class="proj-ctx">${esc(p.context)}</div><div class="proj-desc">${esc(p.desc)}</div></div>`).join('');
+</script>
+<script src="format-switcher.js"></script>
+</body>
+</html>

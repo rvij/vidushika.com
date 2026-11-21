@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vidushika@portfolio:~$</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0d1117; color:#c9d1d9; font-family:'Fira Code','Courier New',monospace; font-size:14px; line-height:1.6; height:100vh; display:flex; flex-direction:column; }
+    .titlebar { background:#161b22; padding:10px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #30363d; flex-shrink:0; }
+    .dot { width:12px; height:12px; border-radius:50%; }
+    .dot.red { background:#ff5f57; } .dot.yellow { background:#febc2e; } .dot.green { background:#28c840; }
+    .titlebar-text { margin-left:8px; color:#8b949e; font-size:13px; }
+    #terminal { flex:1; overflow-y:auto; padding:20px 24px; scroll-behavior:smooth; }
+    .line { margin-bottom:2px; white-space:pre-wrap; word-break:break-word; }
+    .prompt { color:#58a6ff; } .prompt-path { color:#3fb950; } .prompt-sym { color:#c9d1d9; }
+    .cmd-text { color:#e6edf3; } .output { color:#c9d1d9; } .comment { color:#8b949e; }
+    .error { color:#f85149; } .success { color:#3fb950; } .highlight { color:#58a6ff; }
+    .accent { color:#d2a8ff; } .yellow { color:#e3b341; } .orange { color:#ffa657; }
+    .section-title { color:#58a6ff; font-weight:bold; margin:4px 0 2px; }
+    .entry-title { color:#e6edf3; font-weight:bold; } .entry-meta { color:#8b949e; } .entry-date { color:#e3b341; } .bullet { color:#3fb950; }
+    .tag { display:inline-block; background:#1f2937; color:#58a6ff; border:1px solid #30363d; border-radius:4px; padding:1px 7px; margin:2px 3px 2px 0; font-size:12px; }
+    #input-row { display:flex; align-items:center; padding:10px 24px 20px; gap:0; flex-shrink:0; background:#0d1117; position:relative; }
+    #autocomplete { display:none; position:absolute; bottom:calc(100% - 4px); left:24px; background:#161b22; border:1px solid #30363d; border-radius:6px; overflow:hidden; min-width:240px; z-index:10; box-shadow:0 -4px 16px rgba(0,0,0,0.4); }
+    .ac-item { display:flex; gap:12px; padding:6px 14px; cursor:pointer; font-size:13px; }
+    .ac-item:hover, .ac-item.active { background:#1f2937; }
+    .ac-cmd { color:#58a6ff; min-width:90px; } .ac-desc { color:#8b949e; }
+    #input-prompt { color:#58a6ff; white-space:nowrap; user-select:none; }
+    #cmd-input { background:transparent; border:none; outline:none; color:#e6edf3; font-family:inherit; font-size:14px; flex:1; caret-color:#58a6ff; margin-left:6px; }
+    #terminal::-webkit-scrollbar { width:6px; } #terminal::-webkit-scrollbar-track { background:#0d1117; } #terminal::-webkit-scrollbar-thumb { background:#30363d; border-radius:3px; }
+    @media (max-width:600px) { body { font-size:12px; } #terminal, #input-row { padding-left:12px; padding-right:12px; } }
+  </style>
+</head>
+<body>
+<div class="titlebar">
+  <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+  <span class="titlebar-text">vidushika@portfolio: ~</span>
+</div>
+<div id="terminal"></div>
+<div id="input-row">
+  <span id="input-prompt"><span class="prompt">vidushika</span><span class="prompt-sym">@</span><span class="prompt-path">portfolio</span><span class="prompt-sym">:~$ </span></span>
+  <div id="autocomplete"></div>
+  <input id="cmd-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
+</div>
+<script src="resume-data.js"></script>
+<script>
+const terminal = document.getElementById('terminal');
+const input = document.getElementById('cmd-input');
+
+const DATA = {
+  whoami: [
+    ['accent',  '  ╔══════════════════════════════════════════╗'],
+    ['accent',  '  ║          VIDUSHIKA VIJ                   ║'],
+    ['accent',  '  ║   Business Operations & Analytics        ║'],
+    ['accent',  '  ╚══════════════════════════════════════════╝'],
+    ['', ''],
+    ['highlight', `  ${RESUME.name} — ${RESUME.title}`],
+    ['output',   `  ${RESUME.location}`],
+    ['output',   `  ${RESUME.email}`],
+    ['output',   `  ${RESUME.linkedin}`],
+    ['', ''],
+    ...RESUME.summary.match(/.{1,70}(\s|$)/g).map(l => ['comment', '  ' + l.trim()]),
+  ],
+  skills:     RESUME.skills,
+  experience: RESUME.experience,
+  education:  RESUME.education,
+  projects:   RESUME.projects,
+  contact: [
+    ['highlight', '  Contact Vidushika'],
+    ['output',    ''],
+    ['output',    `  Email     →  ${RESUME.email}`],
+    ['output',    `  Phone     →  ${RESUME.phone}`],
+    ['output',    `  LinkedIn  →  ${RESUME.linkedin}`],
+    ['output',    `  Location  →  ${RESUME.location}`],
+  ],
+};
+
+function appendLine(text='', cls='output') { const d=document.createElement('div'); d.className='line '+cls; d.textContent=text; terminal.appendChild(d); }
+function appendHTML(html) { const d=document.createElement('div'); d.className='line'; d.innerHTML=html; terminal.appendChild(d); }
+function appendBlank() { appendLine(''); }
+function appendPromptLine(cmd) { appendHTML(`<span class="prompt">vidushika</span><span class="prompt-sym">@</span><span class="prompt-path">portfolio</span><span class="prompt-sym">:~$ </span><span class="cmd-text">${escHtml(cmd)}</span>`); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function scrollBottom() { terminal.scrollTop = terminal.scrollHeight; }
+
+function renderHelp() {
+  appendLine('  Available commands:', 'section-title'); appendBlank();
+  [['whoami','About me'],['skills','Technical skills'],['experience','Work experience'],['education','Education & certifications'],['automation','AI & automation projects'],['contact','Get in touch'],['resume','Download PDF resume'],['clear','Clear terminal'],['help','Show this menu']].forEach(([cmd,desc]) => appendHTML(`  <span class="highlight">${cmd.padEnd(12)}</span><span class="comment">→  ${desc}</span>`));
+}
+function renderWhoami() { DATA.whoami.forEach(([cls,text]) => appendLine(text, cls||'output')); }
+function renderSkills() {
+  appendLine('  Technical Skills', 'section-title'); appendBlank();
+  Object.entries(DATA.skills).forEach(([cat,items]) => {
+    appendHTML(`  <span class="accent">${cat}</span>`);
+    appendHTML('  '+items.map(t=>`<span class="tag">${escHtml(t)}</span>`).join(''));
+    appendBlank();
+  });
+}
+function renderExperience() {
+  appendLine('  Professional Experience', 'section-title');
+  DATA.experience.forEach(e => {
+    appendBlank();
+    appendHTML(`  <span class="entry-title">${escHtml(e.company)}</span>  <span class="entry-meta">— ${escHtml(e.role)}</span>`);
+    appendHTML(`  <span class="entry-meta">${escHtml(e.location)}</span>  <span class="entry-date">${escHtml(e.dates)}</span>`);
+    e.bullets.forEach(b => appendHTML(`  <span class="bullet">▸</span> <span class="output">${escHtml(b)}</span>`));
+  });
+}
+function renderEducation() {
+  appendLine('  Education', 'section-title');
+  DATA.education.forEach(e => {
+    appendBlank();
+    appendHTML(`  <span class="entry-title">${escHtml(e.school)}</span>  <span class="entry-date">${escHtml(e.dates)}</span>`);
+    appendHTML(`  <span class="accent">${escHtml(e.degree)}</span>`);
+    appendBlank();
+    appendHTML(`  <span class="yellow">Certifications</span>  <span class="output">${escHtml(e.certs)}</span>`);
+  });
+}
+function renderAutomation() {
+  appendLine('  AI & Automation', 'section-title');
+  DATA.projects.forEach(p => {
+    appendBlank();
+    appendHTML(`  <span class="entry-title">${escHtml(p.name)}</span>  <span class="entry-meta">— ${escHtml(p.context)}</span>`);
+    appendHTML(`  <span class="bullet">▸</span> <span class="output">${escHtml(p.desc)}</span>`);
+  });
+}
+function renderContact() { DATA.contact.forEach(([cls,text]) => appendLine(text, cls||'output')); }
+function renderResume() {
+  appendLine('  Downloading resume...', 'success');
+  appendLine('  Opening VidushikaVijResume.pdf', 'comment');
+  const a=document.createElement('a'); a.href='VidushikaVijResume.pdf'; a.download='VidushikaVijResume.pdf'; a.click();
+}
+
+const COMMANDS = { help:renderHelp, whoami:renderWhoami, skills:renderSkills, experience:renderExperience, education:renderEducation, automation:renderAutomation, contact:renderContact, resume:renderResume, clear:()=>{ terminal.innerHTML=''; }, ls:()=>{ appendLine('  whoami  skills  experience  education  automation  contact  resume','highlight'); } };
+const CMD_DESCS = { help:'Show this menu', whoami:'About me', skills:'Technical skills', experience:'Work experience', education:'Education & certifications', automation:'AI & automation projects', contact:'Get in touch', resume:'Download PDF resume', clear:'Clear terminal', ls:'List commands' };
+
+function levenshtein(a,b) { const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>j===0?i:0)); for(let j=0;j<=n;j++)dp[0][j]=j; for(let i=1;i<=m;i++) for(let j=1;j<=n;j++) dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]); return dp[m][n]; }
+function findClosest(cmd) { let best=null,bd=Infinity; for(const k of Object.keys(COMMANDS)) { const d=levenshtein(cmd,k); if(d<bd){bd=d;best=k;} } return bd<=Math.max(2,Math.floor(best.length/2))?best:null; }
+
+function runCommand(raw) {
+  const cmd=raw.trim().toLowerCase();
+  appendPromptLine(raw.trim()); appendBlank();
+  if(!cmd||cmd==='?'){renderHelp();}
+  else if(COMMANDS[cmd]){COMMANDS[cmd]();}
+  else { const c=findClosest(cmd); if(c){appendLine(`  ~> unknown command '${raw.trim()}', interpreting as '${c}'`,'comment');appendBlank();COMMANDS[c]();} else {appendLine(`  command not found: ${raw.trim()}`,'error');appendLine('  type "help" to see available commands.','comment');} }
+  appendBlank(); scrollBottom();
+}
+
+const acEl=document.getElementById('autocomplete');
+let acItems=[],acIdx=-1;
+function showAC(partial) { const m=Object.keys(COMMANDS).filter(c=>c.startsWith(partial)); acItems=m; acIdx=-1; if(!partial||!m.length){acEl.style.display='none';return;} acEl.innerHTML=m.map(cmd=>`<div class="ac-item" data-cmd="${cmd}"><span class="ac-cmd">${escHtml(cmd)}</span><span class="ac-desc">${escHtml(CMD_DESCS[cmd]||'')}</span></div>`).join(''); acEl.style.display='block'; acEl.querySelectorAll('.ac-item').forEach(el=>el.addEventListener('mousedown',e=>{e.preventDefault();input.value=el.dataset.cmd;hideAC();input.focus();})); }
+function hideAC(){acEl.style.display='none';acItems=[];acIdx=-1;}
+function setAcActive(i){acEl.querySelectorAll('.ac-item').forEach((el,j)=>el.classList.toggle('active',j===i));}
+
+let history=[],histIdx=-1;
+input.addEventListener('input',()=>showAC(input.value.trim().toLowerCase()));
+input.addEventListener('keydown',e=>{
+  if(acEl.style.display!=='none'&&acItems.length){
+    if(e.key==='ArrowDown'){e.preventDefault();acIdx=Math.min(acIdx+1,acItems.length-1);setAcActive(acIdx);if(acIdx>=0)input.value=acItems[acIdx];return;}
+    if(e.key==='ArrowUp'){e.preventDefault();if(acIdx<=0){acIdx=-1;setAcActive(-1);return;}acIdx--;setAcActive(acIdx);input.value=acItems[acIdx];return;}
+    if(e.key==='Tab'){e.preventDefault();const p=acIdx>=0?acItems[acIdx]:acItems[0];if(p){input.value=p;hideAC();}return;}
+    if(e.key==='Escape'){hideAC();return;}
+  }
+  if(e.key==='Enter'){const v=input.value;hideAC();if(v.trim()){history.unshift(v);histIdx=-1;}input.value='';runCommand(v);}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(histIdx<history.length-1){histIdx++;input.value=history[histIdx];}}
+  else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx>0){histIdx--;input.value=history[histIdx];}else{histIdx=-1;input.value='';}}
+  else if(e.key==='Tab'){e.preventDefault();const m=Object.keys(COMMANDS).find(c=>c.startsWith(input.value.trim().toLowerCase()));if(m){input.value=m;hideAC();}}
+});
+document.addEventListener('click',()=>input.focus());
+
+async function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function typeEffect(text,cls='output',delay=18){const d=document.createElement('div');d.className='line '+cls;terminal.appendChild(d);for(const ch of text){d.textContent+=ch;await sleep(delay);}scrollBottom();}
+
+async function boot(){
+  await sleep(200);
+  await typeEffect("  Welcome to Vidushika Vij's portfolio terminal.",'accent',16);
+  await sleep(100);
+  await typeEffect('  Type "help" to see available commands.','comment',14);
+  appendBlank();
+  await sleep(300);
+  appendPromptLine('whoami'); appendBlank(); renderWhoami(); appendBlank();
+  await sleep(200);
+  appendPromptLine('help'); appendBlank(); renderHelp(); appendBlank();
+  scrollBottom(); input.focus();
+}
+boot();
+</script>
+<script src="format-switcher.js"></script>
+</body>
+</html>

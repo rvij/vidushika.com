@@ -1,7 +1,12 @@
 (function () {
   const FORMATS = [
-    { name: 'Dashboard',  file: 'index.html',           icon: '▦' },
-    { name: 'Newspaper',  file: 'index_newspaper.html', icon: '≡' },
+    { name: 'Dashboard',     file: 'index.html',            icon: '▦' },
+    { name: 'Minimal',       file: 'index_minlight.html',   icon: '○' },
+    { name: 'Notion',        file: 'index_notion.html',     icon: '▫' },
+    { name: 'Split Pane',    file: 'index_splitpane.html',  icon: '⊞' },
+    { name: 'Timeline',      file: 'timeline.html',         icon: '◈' },
+    { name: 'Terminal',      file: 'index_terminal.html',   icon: '>_' },
+    { name: 'Newspaper',     file: 'index_newspaper.html',  icon: '≡' },
   ];
 
   const current = window.location.pathname.split('/').pop() || 'index.html';

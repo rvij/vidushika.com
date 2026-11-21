@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidushika Vij</title>
+  <style>
+    :root { --bg:#0f1117; --bg2:#161b27; --bg3:#1e2536; --border:#2a3148; --text:#d1d5db; --text-dim:#6b7280; --blue:#60a5fa; --purple:#a78bfa; --green:#34d399; --yellow:#fbbf24; --pink:#f472b6; --accent:#3b82f6; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:15px; line-height:1.7; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(15,17,23,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 5%; display:flex; align-items:center; justify-content:space-between; height:60px; }
+    .nav-logo { font-weight:700; font-size:18px; background:linear-gradient(135deg,var(--blue),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-links { display:flex; gap:28px; }
+    .nav-links a { color:var(--text-dim); text-decoration:none; font-size:14px; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--blue); }
+    section { max-width:860px; margin:0 auto; padding:48px 5% 20px; }
+    .section-label { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:4px; }
+    h2 { font-size:24px; font-weight:700; color:#f3f4f6; margin-bottom:16px; }
+    #hero { display:flex; flex-direction:column; justify-content:center; padding-top:72px; padding-bottom:20px; }
+    .hero-tag { display:inline-block; background:rgba(96,165,250,0.12); border:1px solid rgba(96,165,250,0.3); color:var(--blue); font-size:12px; padding:3px 12px; border-radius:99px; margin-bottom:12px; }
+    .hero-name { font-size:clamp(32px,5vw,52px); font-weight:800; line-height:1.1; background:linear-gradient(135deg,#f3f4f6 30%,var(--blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:10px; }
+    .hero-sub { font-size:15px; color:var(--text-dim); max-width:600px; margin-bottom:16px; }
+    .hero-links { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; border:none; }
+    .btn-primary { background:var(--accent); color:white; }
+    .btn-primary:hover { background:#2563eb; transform:translateY(-1px); }
+    .btn-secondary { background:var(--bg3); color:var(--text); border:1px solid var(--border); }
+    .btn-secondary:hover { border-color:var(--blue); color:var(--blue); }
+    .hero-meta { display:flex; gap:20px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+    .meta-item { font-size:12px; color:var(--text-dim); }
+    .meta-item span { color:var(--text); font-weight:500; }
+    .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+    .skill-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; transition:border-color 0.2s,transform 0.2s; }
+    .skill-card:hover { border-color:var(--blue); transform:translateY(-2px); }
+    .skill-card-title { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+    .skill-card:nth-child(1) .skill-card-title { color:var(--blue); }
+    .skill-card:nth-child(2) .skill-card-title { color:var(--green); }
+    .skill-card:nth-child(3) .skill-card-title { color:var(--purple); }
+    .skill-card:nth-child(4) .skill-card-title { color:var(--yellow); }
+    .skill-card:nth-child(5) .skill-card-title { color:var(--pink); }
+    .tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .tag { background:var(--bg3); border:1px solid var(--border); color:var(--text); font-size:12px; padding:3px 10px; border-radius:6px; }
+    .timeline { position:relative; padding-left:28px; }
+    .timeline::before { content:''; position:absolute; left:6px; top:8px; bottom:0; width:2px; background:linear-gradient(to bottom,var(--blue),var(--purple),transparent); }
+    .timeline-item { position:relative; margin-bottom:14px; opacity:0; transform:translateX(-20px); transition:all 0.5s ease; }
+    .timeline-item.visible { opacity:1; transform:translateX(0); }
+    .timeline-dot { position:absolute; left:-24px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--blue); border:2px solid var(--bg); box-shadow:0 0 0 3px rgba(96,165,250,0.3); }
+    .timeline-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; transition:border-color 0.2s; }
+    .timeline-card:hover { border-color:var(--blue); }
+    .tl-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:6px; margin-bottom:2px; }
+    .tl-company { font-size:15px; font-weight:700; color:#f3f4f6; }
+    .tl-date { font-size:11px; font-weight:600; color:var(--yellow); background:rgba(251,191,36,0.1); border:1px solid rgba(251,191,36,0.2); padding:1px 8px; border-radius:99px; white-space:nowrap; }
+    .tl-role { font-size:13px; color:var(--blue); margin-bottom:1px; }
+    .tl-location { font-size:12px; color:var(--text-dim); margin-bottom:8px; }
+    .tl-bullets { list-style:none; display:flex; flex-direction:column; gap:4px; }
+    .tl-bullets li { font-size:13px; color:var(--text); padding-left:16px; position:relative; line-height:1.5; }
+    .tl-bullets li::before { content:'▸'; position:absolute; left:0; color:var(--green); }
+    .edu-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+    .edu-school { font-size:16px; font-weight:700; color:#f3f4f6; margin-bottom:2px; }
+    .edu-degree { color:var(--purple); font-size:13px; margin-bottom:6px; }
+    .edu-certs { font-size:12px; color:var(--text-dim); }
+    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; }
+    .project-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; transition:border-color 0.2s,transform 0.2s; }
+    .project-card:hover { border-color:var(--purple); transform:translateY(-2px); }
+    .proj-name { font-size:14px; font-weight:700; color:#f3f4f6; margin-bottom:2px; }
+    .proj-ctx { font-size:11px; color:var(--text-dim); margin-bottom:8px; }
+    .proj-desc { font-size:13px; color:var(--text); line-height:1.5; }
+    .fade-in { opacity:0; transform:translateY(24px); transition:all 0.6s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
+    footer { text-align:center; padding:24px; border-top:1px solid var(--border); color:var(--text-dim); font-size:13px; }
+    @media (max-width:600px) { .nav-links { display:none; } .hero-name { font-size:40px; } .projects-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Vidushika Vij</div>
+  <div class="nav-links">
+    <a href="#hero">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#projects">AI &amp; Automation</a>
+  </div>
+</nav>
+<section id="hero">
+  <div class="hero-tag">Open to opportunities</div>
+  <div class="hero-name">Vidushika Vij</div>
+  <p class="hero-sub">Business Operations &amp; Analytics professional with 4+ years of experience. Uses Claude and Gemini to automate reporting and scripting workflows.</p>
+  <div class="hero-links">
+    <a href="VidushikaVijResume.pdf" download class="btn btn-primary">⬇ Download Resume</a>
+    <a href="https://linkedin.com/in/vidushikavij" target="_blank" class="btn btn-secondary">LinkedIn</a>
+  </div>
+  <div class="hero-meta">
+    <div class="meta-item">📍 <span>San Francisco Bay Area, CA</span></div>
+    <div class="meta-item">🎓 <span>Northeastern University · M.P.S. Analytics</span></div>
+    <div class="meta-item">💼 <span>QA Test Engineer @ Google Fiber</span></div>
+    <div class="meta-item">✉️ <span>vidushika.vij@hcltech.com</span></div>
+  </div>
+</section>
+<section id="skills">
+  <div class="section-label">Expertise</div>
+  <h2>Technical Skills</h2>
+  <div class="skills-grid fade-in" id="tl-skills"></div>
+</section>
+<section id="experience">
+  <div class="section-label">Career</div>
+  <h2>Professional Experience</h2>
+  <div class="timeline" id="tl-experience"></div>
+</section>
+<section id="education">
+  <div class="section-label">Academic Background</div>
+  <h2>Education</h2>
+  <div id="tl-education"></div>
+</section>
+<section id="projects" style="padding-bottom:48px">
+  <div class="section-label">Work</div>
+  <h2>AI &amp; Automation</h2>
+  <div class="projects-grid" id="tl-projects"></div>
+</section>
+<footer id="tl-footer"></footer>
+<script src="resume-data.js"></script>
+<script>
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const colors = ['var(--blue)','var(--green)','var(--purple)','var(--yellow)','var(--pink)'];
+  document.getElementById('tl-skills').innerHTML = Object.entries(RESUME.skills).map(([cat,items],i) =>
+    `<div class="skill-card"><div class="skill-card-title" style="color:${colors[i%colors.length]}">${esc(cat)}</div>
+    <div class="tags">${items.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`).join('');
+  document.getElementById('tl-experience').innerHTML = RESUME.experience.map(e =>
+    `<div class="timeline-item"><div class="timeline-dot"></div>
+    <div class="timeline-card"><div class="tl-header"><div class="tl-company">${esc(e.company)}</div><div class="tl-date">${esc(e.dates)}</div></div>
+    <div class="tl-role">${esc(e.role)}</div><div class="tl-location">📍 ${esc(e.location)}</div>
+    <ul class="tl-bullets">${e.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div></div>`).join('');
+  document.getElementById('tl-education').innerHTML = RESUME.education.map(e =>
+    `<div class="edu-card fade-in"><div class="edu-school">${esc(e.school)}</div>
+    <div class="edu-degree">${esc(e.degree)} · ${esc(e.dates)}</div>
+    <div class="edu-certs">Certifications: ${esc(e.certs)}</div></div>`).join('');
+  document.getElementById('tl-projects').innerHTML = RESUME.projects.map(p =>
+    `<div class="project-card fade-in"><div class="proj-name">${esc(p.name)}</div><div class="proj-ctx">${esc(p.context)}</div><div class="proj-desc">${esc(p.desc)}</div></div>`).join('');
+  document.getElementById('tl-footer').innerHTML = `${esc(RESUME.name)} &nbsp;·&nbsp; ${esc(RESUME.location)}`;
+  const obs = new IntersectionObserver(entries => entries.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); }), {threshold:0.1});
+  document.querySelectorAll('.fade-in,.timeline-item').forEach(el => obs.observe(el));
+</script>
+<script src="format-switcher.js"></script>
+</body>
+</html>

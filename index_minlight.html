@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidushika Vij</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff; --bg-subtle: #f9fafb; --border: #e5e7eb;
+      --text: #111827; --text-mid: #374151; --text-dim: #6b7280;
+      --accent: #1d4ed8; --accent-light: #eff6ff; --tag-bg: #f3f4f6; --tag-border: #e5e7eb;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+    .nav-logo { font-weight: 700; font-size: 15px; color: var(--text); letter-spacing: -0.3px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.15s; }
+    .nav-links a:hover { color: var(--accent); }
+    .page { max-width: 740px; margin: 0 auto; padding: 0 24px 80px; }
+    .hero { padding: 48px 0 36px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--accent); background: var(--accent-light); border: 1px solid #bfdbfe; padding: 3px 10px; border-radius: 99px; margin-bottom: 16px; }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .hero-name { font-size: 40px; font-weight: 700; color: var(--text); letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 8px; }
+    .hero-title { font-size: 16px; font-weight: 500; color: var(--text-mid); margin-bottom: 16px; }
+    .hero-desc { font-size: 14px; color: var(--text-dim); max-width: 560px; line-height: 1.7; margin-bottom: 20px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+    .meta-chip { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-mid); }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; text-decoration: none; border: none; transition: all 0.15s; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #1e40af; }
+    .btn-outline { background: white; color: var(--text-mid); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .section { margin-bottom: 36px; }
+    .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .section-head h2 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+    .exp-list { display: flex; flex-direction: column; gap: 20px; }
+    .exp-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 1px; }
+    .exp-company { font-size: 15px; font-weight: 700; color: var(--text); }
+    .exp-date { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+    .exp-role { font-size: 13px; font-weight: 500; color: var(--accent); margin-bottom: 1px; }
+    .exp-location { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .exp-bullets li { font-size: 13px; color: var(--text-mid); padding-left: 14px; position: relative; line-height: 1.6; }
+    .exp-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--text-dim); }
+    .exp-divider { height: 1px; background: var(--border); margin-top: 20px; }
+    .exp-divider:last-child { display: none; }
+    .skills-list { display: flex; flex-direction: column; gap: 10px; }
+    .skill-row { display: flex; gap: 10px; align-items: flex-start; }
+    .skill-label { font-size: 12px; font-weight: 600; color: var(--text-dim); min-width: 130px; padding-top: 3px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { background: var(--tag-bg); border: 1px solid var(--tag-border); color: var(--text-mid); font-size: 12px; padding: 2px 9px; border-radius: 4px; font-weight: 500; }
+    .edu-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
+    .edu-school { font-size: 15px; font-weight: 700; color: var(--text); }
+    .edu-date { font-size: 12px; color: var(--text-dim); }
+    .edu-degree { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 10px; }
+    .proj-list { display: flex; flex-direction: column; gap: 14px; }
+    .proj-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+    .proj-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .proj-ctx { font-size: 12px; color: var(--text-dim); }
+    .proj-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+    footer { max-width: 740px; margin: 0 auto; padding: 20px 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); }
+    @media (max-width: 600px) { .nav-links { display: none; } .hero-name { font-size: 30px; } .skill-row { flex-direction: column; gap: 4px; } .skill-label { min-width: unset; } }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Vidushika Vij</div>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#projects">AI & Automation</a>
+  </div>
+</nav>
+<div class="page">
+  <div class="hero">
+    <div class="hero-eyebrow">Open to opportunities</div>
+    <div class="hero-name">Vidushika Vij</div>
+    <div class="hero-title">Business Operations &amp; Analytics</div>
+    <p class="hero-desc">4+ years of experience spanning quality assurance operations, business systems administration, and data analytics. Uses Claude and Gemini to automate reporting and scripting workflows.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">📍 San Francisco Bay Area, CA</div>
+      <div class="meta-chip">🎓 Northeastern University · M.P.S. Analytics</div>
+      <div class="meta-chip">💼 QA Test Engineer @ Google Fiber</div>
+    </div>
+    <div class="hero-actions">
+      <a href="VidushikaVijResume.pdf" download class="btn btn-primary">⬇ Download Resume</a>
+      <a href="https://linkedin.com/in/vidushikavij" target="_blank" class="btn btn-outline">LinkedIn</a>
+    </div>
+  </div>
+  <div class="section" id="experience">
+    <div class="section-head"><h2>Experience</h2><div class="section-rule"></div></div>
+    <div class="exp-list" id="ml-experience"></div>
+  </div>
+  <div class="section" id="skills">
+    <div class="section-head"><h2>Skills</h2><div class="section-rule"></div></div>
+    <div class="skills-list" id="ml-skills"></div>
+  </div>
+  <div class="section" id="education">
+    <div class="section-head"><h2>Education</h2><div class="section-rule"></div></div>
+    <div id="ml-education"></div>
+  </div>
+  <div class="section" id="projects">
+    <div class="section-head"><h2>AI &amp; Automation</h2><div class="section-rule"></div></div>
+    <div class="proj-list" id="ml-projects"></div>
+  </div>
+</div>
+<footer id="ml-footer"></footer>
+<script src="resume-data.js"></script>
+<script>
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.getElementById('ml-experience').innerHTML = RESUME.experience.map((e,i,a) =>
+    `<div class="exp-item">
+      <div class="exp-header"><div class="exp-company">${esc(e.company)}</div><div class="exp-date">${esc(e.dates)}</div></div>
+      <div class="exp-role">${esc(e.role)}</div>
+      <div class="exp-location">${esc(e.location)}</div>
+      <ul class="exp-bullets">${e.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
+    </div>${i<a.length-1?'<div class="exp-divider"></div>':''}`).join('');
+  document.getElementById('ml-skills').innerHTML = Object.entries(RESUME.skills).map(([cat,items]) =>
+    `<div class="skill-row"><div class="skill-label">${esc(cat)}</div><div class="tags">${items.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`).join('');
+  document.getElementById('ml-education').innerHTML = RESUME.education.map(edu =>
+    `<div style="margin-bottom:18px"><div class="edu-header"><div class="edu-school">${esc(edu.school)}</div><div class="edu-date">${esc(edu.dates)}</div></div>
+    <div class="edu-degree">${esc(edu.degree)}</div></div>`).join('');
+  document.getElementById('ml-projects').innerHTML = RESUME.projects.map(p =>
+    `<div class="proj-item"><div class="proj-header"><div class="proj-name">${esc(p.name)}</div><div class="proj-ctx">${esc(p.context)}</div></div><div class="proj-desc">${esc(p.desc)}</div></div>`).join('');
+  document.getElementById('ml-footer').textContent = `${RESUME.name} · ${RESUME.location}`;
+</script>
+<script src="format-switcher.js"></script>
+</body>
+</html>
