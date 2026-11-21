@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidushika Vij</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf9f6;
+      --ink: #1a1a18;
+      --ink-mid: #3a3a36;
+      --ink-dim: #7a7a72;
+      --ink-faint: #b8b8b0;
+      --rule: #d0cfc8;
+      --accent: #1a1a18;
+      --blue: #1d3a8a;
+      --tag-bg: #f0efe8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    .masthead {
+      border-bottom: 3px double var(--ink);
+      padding: 18px 5% 14px;
+      text-align: center;
+    }
+    .masthead-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .masthead-meta { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-dim); }
+    .masthead-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .masthead-tagline {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--ink-dim); margin-top: 6px;
+    }
+    .masthead-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 10px; padding-top: 8px;
+      border-top: 1px solid var(--rule);
+    }
+    .masthead-contact {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: var(--ink-dim);
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .masthead-contact a { color: var(--ink-dim); text-decoration: none; }
+    .masthead-contact a:hover { color: var(--blue); }
+    .masthead-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      background: var(--ink); color: var(--bg);
+      padding: 5px 14px; border-radius: 2px;
+      text-decoration: none; transition: opacity 0.15s;
+      letter-spacing: 0.5px;
+    }
+    .masthead-btn:hover { opacity: 0.75; }
+    .navbar {
+      background: var(--ink); padding: 0 5%;
+      display: flex; gap: 0;
+      position: sticky; top: 0; z-index: 100;
+      overflow-x: auto;
+    }
+    .navbar a {
+      color: #e8e7e0; text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 10px 16px; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .navbar a:hover { background: rgba(255,255,255,0.1); }
+    .wrapper { max-width: 1060px; margin: 0 auto; padding: 0 5% 80px; }
+    .sec-head {
+      border-top: 3px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      padding: 6px 0 5px;
+      margin: 32px 0 18px;
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .sec-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 800;
+      color: var(--ink); line-height: 1;
+    }
+    .sec-head-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: var(--ink-dim); font-style: italic;
+    }
+    .hero-strip {
+      display: grid; grid-template-columns: 2fr 1fr;
+      gap: 0; border-bottom: 1px solid var(--rule);
+      padding: 24px 0 20px;
+    }
+    .hero-main { padding-right: 28px; border-right: 1px solid var(--rule); }
+    .hero-aside { padding-left: 24px; }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 800;
+      line-height: 1.2; color: var(--ink); margin-bottom: 10px;
+    }
+    .hero-body { font-size: 14px; color: var(--ink-mid); line-height: 1.75; margin-bottom: 12px; }
+    .hero-byline {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: var(--ink-dim);
+      border-top: 1px solid var(--rule);
+      padding-top: 8px; display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .aside-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 8px;
+    }
+    .aside-stat { margin-bottom: 12px; }
+    .aside-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 800;
+      color: var(--ink); line-height: 1;
+    }
+    .aside-desc { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-dim); }
+    .exp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+    .exp-col:first-child { padding-right: 24px; border-right: 1px solid var(--rule); }
+    .exp-col:last-child { padding-left: 24px; }
+    .exp-item { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+    .exp-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .exp-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; font-weight: 800; color: var(--ink); line-height: 1.2;
+    }
+    .exp-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; color: var(--ink-dim);
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2px;
+    }
+    .exp-role-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 600;
+      color: var(--blue); margin-bottom: 6px; font-style: italic;
+    }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    .exp-bullets li {
+      font-size: 13px; color: var(--ink-mid);
+      padding-left: 12px; position: relative; line-height: 1.6;
+    }
+    .exp-bullets li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--ink-faint); font-size: 11px; top: 1px;
+    }
+    .skills-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+    .skill-col { padding: 0 16px; border-right: 1px solid var(--rule); }
+    .skill-col:first-child { padding-left: 0; }
+    .skill-col:last-child { border-right: none; padding-right: 0; }
+    .skill-col-head {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 8px;
+      border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+    }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    .skill-list li { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-mid); }
+    .bottom-strip { display: grid; grid-template-columns: 1fr 2fr; gap: 0; }
+    .edu-col { padding-right: 28px; border-right: 1px solid var(--rule); }
+    .certs-col { padding-left: 28px; }
+    .edu-school { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 800; color: var(--ink); }
+    .edu-dates { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-dim); margin-bottom: 2px; }
+    .edu-degree { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; font-style: italic; color: var(--blue); margin-bottom: 14px; }
+    .cert-row { margin-bottom: 7px; }
+    .cert-name { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-mid); }
+    .cert-issuer { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-dim); font-style: italic; }
+    .ai-bullets { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 20px; margin-top: 2px; }
+    .ai-bullets li { font-size: 12px; color: var(--ink-mid); padding-left: 12px; position: relative; line-height: 1.55; }
+    .ai-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--ink-faint); font-size: 11px; top: 1px; }
+    .footer {
+      border-top: 3px double var(--ink);
+      padding: 12px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-dim);
+    }
+    .footer a { color: var(--ink-dim); text-decoration: none; }
+    .footer a:hover { color: var(--blue); }
+    @media (max-width: 720px) {
+      .hero-strip { grid-template-columns: 1fr; }
+      .hero-main { border-right: none; padding-right: 0; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+      .hero-aside { padding-left: 0; padding-top: 16px; }
+      .exp-grid { grid-template-columns: 1fr; }
+      .exp-col:first-child { border-right: none; padding-right: 0; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+      .exp-col:last-child { padding-left: 0; padding-top: 24px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .skill-col { border-right: none; padding: 0 0 12px; border-bottom: 1px solid var(--rule); margin-bottom: 4px; }
+      .bottom-strip { grid-template-columns: 1fr; }
+      .edu-col { border-right: none; padding-right: 0; padding-bottom: 24px; border-bottom: 1px solid var(--rule); margin-bottom: 4px; }
+      .certs-col { padding-left: 0; }
+      .ai-bullets { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="masthead">
+  <div class="masthead-top">
+    <span class="masthead-meta">San Francisco Bay Area, CA · US Citizen</span>
+    <span class="masthead-meta">Business Operations &amp; Analytics</span>
+  </div>
+  <div class="masthead-name">Vidushika Vij</div>
+  <div class="masthead-tagline">AI-Assisted Automation · BI Dashboards · QA Operations · Stakeholder Management</div>
+  <div class="masthead-bottom">
+    <div class="masthead-contact">
+      <span>vidushika.vij@hcltech.com</span>
+      <a href="https://linkedin.com/in/vidushikavij" target="_blank" rel="noopener">linkedin.com/in/vidushikavij</a>
+    </div>
+    <a href="VidushikaVijResume.pdf" download class="masthead-btn">⬇ Download PDF</a>
+  </div>
+</div>
+
+<nav class="navbar">
+  <a href="#experience">Experience</a>
+  <a href="#automation">AI &amp; Automation</a>
+  <a href="#skills">Skills</a>
+  <a href="#education">Education</a>
+  <a href="#certifications">Certifications</a>
+</nav>
+
+<div class="wrapper">
+
+  <div class="hero-strip">
+    <div class="hero-main">
+      <div class="hero-headline">Business operations professional with a data-first approach and a proven record automating workflows with AI.</div>
+      <p class="hero-body">4+ years spanning quality assurance operations, business systems administration, and data analytics. Primary liaison between Automation, Engineering, and Mobile teams at Google Fiber. Builds reporting solutions in Power BI, Tableau, and SQL, and uses Claude and Gemini to automate recurring reporting and scripting tasks. Currently exploring full-time opportunities in business operations, data analytics, and AI-assisted automation.</p>
+      <div class="hero-byline">
+        <span>San Francisco Bay Area, CA</span>
+        <span>May 2023 – Present: Google Fiber via HCL Technologies</span>
+      </div>
+    </div>
+    <div class="hero-aside">
+      <div class="aside-label">By the numbers</div>
+      <div class="aside-stat">
+        <div class="aside-num">4+</div>
+        <div class="aside-desc">Years of professional experience</div>
+      </div>
+      <div class="aside-stat">
+        <div class="aside-num">30%</div>
+        <div class="aside-desc">Reduction in manual processing time via Linux automation</div>
+      </div>
+      <div class="aside-stat">
+        <div class="aside-num">20</div>
+        <div class="aside-desc">Stakeholders reached through Power BI demos</div>
+      </div>
+      <div class="aside-stat">
+        <div class="aside-num">5+</div>
+        <div class="aside-desc">Systems analyzed for device compliance reporting</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="experience">
+    <div class="sec-head">
+      <h2>Professional Experience</h2>
+      <span class="sec-head-sub">Reverse chronological</span>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-col">
+        <div class="exp-item">
+          <div class="exp-company">Google Fiber (via HCL Technologies)</div>
+          <div class="exp-meta"><span>Sunnyvale, CA</span><span>May 2023 – Present</span></div>
+          <div class="exp-role-text">Niche QA Test Engineer</div>
+          <ul class="exp-bullets">
+            <li>Primary point of contact between Automation, Engineering, and Mobile teams; coordinate device QA processes and offshore/onshore work management.</li>
+            <li>Manage Salesforce account creation workflows; built a Linux automation script that cut manual processing time by 30%.</li>
+            <li>Analyze device compliance data across SCM, Netcracker, RPC Studio, and Axiros to resolve data integrity issues.</li>
+            <li>Run device performance and speed testing to support operational reporting to cross-functional stakeholders.</li>
+          </ul>
+        </div>
+        <div class="exp-item">
+          <div class="exp-company">HCL Technologies</div>
+          <div class="exp-meta"><span>Sacramento, CA</span><span>Jan 2022 – May 2023</span></div>
+          <div class="exp-role-text">Developer (Business/Data Analyst)</div>
+          <ul class="exp-bullets">
+            <li>Gathered and translated business requirements for a Microsoft employee-experience platform; built reporting solutions in Power BI, Excel, and SQL.</li>
+            <li>Presented Power BI demos to internal audiences of 20 employees, supporting adoption of new analytics tooling.</li>
+            <li>Developed data governance, data security, and data privacy practices with client teams.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-col">
+        <div class="exp-item">
+          <div class="exp-company">HCL America Inc.</div>
+          <div class="exp-meta"><span>Sacramento, CA</span><span>Sep – Dec 2021</span></div>
+          <div class="exp-role-text">Data Science Analyst Intern</div>
+          <ul class="exp-bullets">
+            <li>Selected for "Rise at HCL Academy"; delivered data science and engineering projects using Microsoft Azure, Apache Spark/Databricks, and BI tools.</li>
+            <li>Led team developing and validating data science models; converted internship to a full-time offer.</li>
+          </ul>
+        </div>
+        <div class="exp-item">
+          <div class="exp-company">Tredence Inc.</div>
+          <div class="exp-meta"><span>Menlo Park, CA</span><span>Jun – Aug 2019</span></div>
+          <div class="exp-role-text">Business Analyst Intern</div>
+          <ul class="exp-bullets">
+            <li>Analyzed retail sales data with SQL for a large enterprise client to identify business trends.</li>
+            <li>Built interactive Tableau dashboards to visualize KPIs and sales performance for stakeholder reporting.</li>
+          </ul>
+        </div>
+        <div class="exp-item">
+          <div class="exp-company">FlyTxt Inc.</div>
+          <div class="exp-meta"><span>Cupertino, CA</span><span>Jun – Aug 2018</span></div>
+          <div class="exp-role-text">Marketing &amp; Business Analyst Intern</div>
+          <ul class="exp-bullets">
+            <li>Supported design and execution of digital marketing campaigns on FlyTxt's telecom platform.</li>
+            <li>Measured and reported campaign performance metrics to guide marketing strategy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="automation">
+    <div class="sec-head">
+      <h2>AI &amp; Automation</h2>
+      <span class="sec-head-sub">Claude · Gemini · Apple Shortcuts</span>
+    </div>
+    <ul class="ai-bullets">
+      <li>Built AI agents with Gemini Spark, Claude Skills, and Apple Shortcuts to summarize daily market news and analyze key emails.</li>
+      <li>Streamlined defect reporting by using Claude to summarize device test logs and draft tickets.</li>
+      <li>Automated weekly KPI summaries by feeding Power BI exports to Claude to generate stakeholder-ready narratives.</li>
+      <li>Accelerated SQL development using Gemini to draft and optimize cross-system device compliance queries.</li>
+      <li>Developed and refined Python/Linux automation scripts for account provisioning with Claude.</li>
+      <li>Built and launched a personal website (vidushika.com) using Claude, deployed on Cloudflare.</li>
+    </ul>
+  </div>
+
+  <div id="skills">
+    <div class="sec-head">
+      <h2>Technical Skills</h2>
+      <span class="sec-head-sub">Tools &amp; platforms</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-col">
+        <div class="skill-col-head">BI &amp; Visualization</div>
+        <ul class="skill-list">
+          <li>Power BI</li><li>Tableau</li><li>Excel (Advanced)</li><li>Data Visualization</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">Data &amp; Analytics</div>
+        <ul class="skill-list">
+          <li>SQL</li><li>Python</li><li>R</li><li>Data Governance</li><li>Data Privacy</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">Cloud &amp; Systems</div>
+        <ul class="skill-list">
+          <li>Google Cloud</li><li>Microsoft Azure</li><li>Linux</li><li>Salesforce Admin</li><li>HubSpot</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">AI &amp; Automation</div>
+        <ul class="skill-list">
+          <li>Claude (Anthropic)</li><li>Gemini</li><li>Prompt Engineering</li><li>Process Automation</li><li>Apple Shortcuts</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-head">Operations &amp; QA</div>
+        <ul class="skill-list">
+          <li>QA Automation</li><li>Requirements Gathering</li><li>Stakeholder Mgmt</li><li>Spark / Databricks</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="education">
+    <div class="sec-head">
+      <h2>Education &amp; Certifications</h2>
+    </div>
+    <div class="bottom-strip">
+      <div class="edu-col">
+        <div class="edu-school">Northeastern University</div>
+        <div class="edu-dates">Boston, MA · 2021–2022</div>
+        <div class="edu-degree">Master of Professional Studies in Analytics</div>
+        <div class="edu-school">San Jose State University</div>
+        <div class="edu-dates">San Jose, CA · 2016–2020</div>
+        <div class="edu-degree">B.S. Business Administration, Business Analytics</div>
+      </div>
+      <div class="certs-col" id="certifications">
+        <div class="cert-row">
+          <div class="cert-name">Certificate Program in Business Analytics</div>
+          <div class="cert-issuer">Harvard Business School Online · 2020</div>
+        </div>
+        <div class="cert-row">
+          <div class="cert-name">Google Cloud Associate Cloud Engineer</div>
+          <div class="cert-issuer">Google · 2021</div>
+        </div>
+        <div class="cert-row">
+          <div class="cert-name">Microsoft Azure AI Fundamentals – AI-900</div>
+          <div class="cert-issuer">Microsoft · 2022</div>
+        </div>
+        <div class="cert-row">
+          <div class="cert-name">HubSpot Sales Software Certified</div>
+          <div class="cert-issuer">HubSpot · 2023</div>
+        </div>
+        <div class="cert-row" style="margin-top:10px; font-family:'Inter',sans-serif; font-size:11px; color:var(--ink-dim); font-style:italic;">
+          Additional: Google Cloud Professional Cloud Security Engineer · Cisco Introduction to Cybersecurity · Excel Skills for Business (Coursera)
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>vidushika.vij@hcltech.com · <a href="https://linkedin.com/in/vidushikavij" target="_blank" rel="noopener">linkedin.com/in/vidushikavij</a></span>
+  <span>San Francisco Bay Area, CA · US Citizen</span>
+</div>
+<script src="format-switcher.js"></script>
+</body>
+</html>
